@@ -26,7 +26,6 @@
             z-index: -1;
         }
 
-        /* HEADER */
         .header {
             display: flex;
             justify-content: space-between;
@@ -65,7 +64,6 @@
             box-shadow: 0 0 15px #00ff9d;
         }
 
-        /* CONTAINER PRINCIPAL */
         .container {
             max-width: 900px;
             margin: 40px auto;
@@ -100,7 +98,6 @@
             margin-bottom: 25px;
         }
 
-        /* STATS */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -128,7 +125,6 @@
             margin-top: 5px;
         }
 
-        /* PROGRESS BAR */
         .progress-container { margin-bottom: 30px; }
 
         .progress-label {
@@ -169,7 +165,6 @@
             100% { transform: translateX(100%); }
         }
 
-        /* TAREFAS */
         .tasks {
             display: grid;
             gap: 15px;
@@ -210,11 +205,8 @@
         }
 
         .task-icon { font-size: 24px; color: #00ff9d; }
-
         .task-text { text-align: left; }
-
         .task-name { font-weight: bold; color: #00ff9d; }
-
         .task-url { font-size: 12px; color: #0f0; margin-top: 3px; }
 
         .task-action {
@@ -240,7 +232,6 @@
 
         .task.completed .check-icon { opacity: 1; }
 
-        /* ACCESS BUTTON */
         .access-btn {
             width: 100%;
             padding: 20px;
@@ -288,7 +279,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -418,7 +408,6 @@
             box-shadow: 0 0 10px #ff0000;
         }
 
-        /* LOGIN PAGE */
         .login-container {
             display: none;
             position: fixed;
@@ -518,7 +507,6 @@
             box-shadow: 0 0 10px #ff0000;
         }
 
-        /* SEÇÃO DE LINKS GERADOS */
         .generated-link-item {
             background: rgba(0, 255, 157, 0.05);
             border: 1px solid #00ff9d;
@@ -627,7 +615,6 @@
             box-shadow: 0 0 8px #00ff9d;
         }
 
-        /* FOOTER */
         .footer {
             text-align: center;
             padding: 30px;
@@ -639,7 +626,6 @@
 
         .creator { color: #00ff9d; font-weight: bold; }
 
-        /* RESPONSIVO */
         @media (max-width: 600px) {
             .header { flex-direction: column; gap: 15px; }
             .title { font-size: 22px; }
@@ -653,12 +639,9 @@
 <body>
     <canvas id="matrix"></canvas>
 
-    <!-- LOGIN PAGE (só aparece no modo admin) -->
     <div class="login-container" id="loginContainer">
         <div class="login-box">
-            <div class="login-title">
-                <i class="fa-solid fa-lock"></i> ADMIN LOGIN
-            </div>
+            <div class="login-title"><i class="fa-solid fa-lock"></i> ADMIN LOGIN</div>
             <div class="login-subtitle">Acesso restrito ao painel administrativo</div>
             <input type="text" class="login-input" id="loginUser" placeholder="Usuário" autocomplete="off">
             <input type="password" class="login-input" id="loginPass" placeholder="Senha" autocomplete="off">
@@ -667,26 +650,18 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <div class="header" id="mainHeader" style="display: none;">
         <div class="logo">
             <i class="fa-solid fa-user-secret"></i>
             NXYSS7 GAMIFICATION
         </div>
-        <div style="display: flex; gap: 15px;" id="headerButtons">
-            <!-- Botão admin só aparece se isAdminMode = true -->
-        </div>
+        <div style="display: flex; gap: 15px;" id="headerButtons"></div>
     </div>
 
-    <!-- CONTAINER PRINCIPAL -->
     <div class="container" id="mainContent" style="display: none;">
         <div class="card">
-            <div class="title">
-                <i class="fa-solid fa-lock"></i> ACESSO BLOQUEADO
-            </div>
-            <div class="subtitle">
-                Complete as tarefas abaixo para liberar o conteúdo exclusivo
-            </div>
+            <div class="title"><i class="fa-solid fa-lock"></i> ACESSO BLOQUEADO</div>
+            <div class="subtitle">Complete as tarefas abaixo para liberar o conteúdo exclusivo</div>
 
             <div class="stats">
                 <div class="stat-box">
@@ -726,38 +701,28 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
     <div class="footer" id="mainFooter" style="display: none;">
         Criado por <span class="creator">NOX MODDER</span> | Plataforma de Gamificação Profissional
     </div>
 
-    <!-- MODAL ADMIN -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">
-                    <i class="fa-solid fa-sliders"></i> PAINEL ADMIN
-                </div>
+                <div class="modal-title"><i class="fa-solid fa-sliders"></i> PAINEL ADMIN</div>
                 <button class="close-btn" onclick="closeAdmin()">×</button>
             </div>
 
-            <!-- CONFIGURAÇÃO DE LINK DE ACESSO -->
-            <div class="form-group" style="background: rgba(0, 255, 157, 0.05); padding: 15px; border-radius: 8px; border: 1px solid #00ff9d; margin-bottom: 25px;">
+            <div class="form-group" style="background: rgba(0,255,157,0.05); padding: 15px; border-radius: 8px; border: 1px solid #00ff9d; margin-bottom: 25px;">
                 <div class="form-label">⚙️ CONFIGURAR LINK DE ACESSO</div>
                 <input type="text" class="form-input" id="accessLink" placeholder="Cole o link de destino (ex: https://seu-site.com/conteudo)">
-                <button class="btn-add" onclick="saveAccessLink()">
-                    <i class="fa-solid fa-save"></i> SALVAR LINK
-                </button>
-                <button class="btn-add" style="background: #330000; border-color: #ff0000; margin-top: 5px;" onclick="clearAccessLink()">
-                    <i class="fa-solid fa-trash"></i> LIMPAR LINK
-                </button>
+                <button class="btn-add" onclick="saveAccessLink()"><i class="fa-solid fa-save"></i> SALVAR LINK</button>
+                <button class="btn-add" style="background: #330000; border-color: #ff0000; margin-top: 5px;" onclick="clearAccessLink()"><i class="fa-solid fa-trash"></i> LIMPAR LINK</button>
                 <div id="accessLinkStatus" style="color: #0f0; font-size: 12px; margin-top: 10px;"></div>
             </div>
 
-            <!-- COMPARTILHAR PÁGINA -->
-            <div class="form-group" style="background: rgba(0, 100, 255, 0.05); padding: 15px; border-radius: 8px; border: 1px solid #0066ff; margin-bottom: 25px;">
+            <div class="form-group" style="background: rgba(0,100,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid #0066ff; margin-bottom: 25px;">
                 <div class="form-label" style="color: #66aaff;">🔗 COMPARTILHAR PÁGINA DE ETAPAS</div>
-                <p style="color: #4488cc; font-size: 13px; margin-bottom: 12px;">Gere um link para compartilhar a página pública com os usuários. O botão Admin não aparece para quem acessar por este link.</p>
+                <p style="color: #4488cc; font-size: 13px; margin-bottom: 12px;">Gere um link para compartilhar a página pública. O botão Admin não aparece para quem acessar por este link.</p>
                 <input type="text" class="form-input" id="shareLinkName" placeholder="Nome do link (ex: Campanha Dezembro, Sorteio #1)" style="border-color: #0066ff; color: #66aaff;">
                 <button class="btn-add" onclick="generateShareLink()" style="background: #000d33; border-color: #0066ff; color: #66aaff;">
                     <i class="fa-solid fa-share-nodes"></i> GERAR LINK COMPARTILHÁVEL
@@ -771,15 +736,13 @@
                 </div>
             </div>
 
-            <!-- LINKS GERADOS -->
-            <div class="form-group" style="background: rgba(255, 200, 0, 0.03); padding: 15px; border-radius: 8px; border: 1px solid #664400; margin-bottom: 25px;">
+            <div class="form-group" style="background: rgba(255,200,0,0.03); padding: 15px; border-radius: 8px; border: 1px solid #664400; margin-bottom: 25px;">
                 <div class="form-label" style="color: #ffcc00;">📋 LINKS GERADOS</div>
                 <div id="generatedLinksList">
                     <p style="color: #664400; font-size: 13px; text-align: center;">Nenhum link gerado ainda.</p>
                 </div>
             </div>
 
-            <!-- ADICIONAR TAREFA -->
             <div class="form-group">
                 <div class="form-label">ADICIONAR NOVA TAREFA</div>
                 <input type="text" class="form-input" id="taskName" placeholder="Nome da tarefa (ex: Seguir no Instagram)">
@@ -799,16 +762,12 @@
                 </select>
                 <input type="text" class="form-input" id="taskUrl" placeholder="Link da rede social (ex: https://instagram.com/seu_perfil)">
                 <input type="hidden" id="taskIcon">
-                <button class="btn-add" onclick="addTask()">
-                    <i class="fa-solid fa-plus"></i> ADICIONAR TAREFA
-                </button>
+                <button class="btn-add" onclick="addTask()"><i class="fa-solid fa-plus"></i> ADICIONAR TAREFA</button>
             </div>
 
-            <!-- LISTA DE TAREFAS -->
             <div class="form-label">TAREFAS CADASTRADAS</div>
             <div class="task-list-admin" id="adminTaskList"></div>
 
-            <!-- CONFIGURAÇÕES -->
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #00ff9d;">
                 <div class="form-label">CONFIGURAÇÕES</div>
                 <button class="btn-add" style="background: #330000; border-color: #ff0000;" onclick="resetData()">
@@ -819,43 +778,33 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO DE REDES SOCIAIS
         const socialMediaConfig = {
-            youtube:   { icon: 'fa-brands fa-youtube',   name: 'YouTube'   },
-            instagram: { icon: 'fa-brands fa-instagram', name: 'Instagram' },
-            tiktok:    { icon: 'fa-brands fa-tiktok',    name: 'TikTok'    },
-            twitch:    { icon: 'fa-brands fa-twitch',    name: 'Twitch'    },
-            discord:   { icon: 'fa-brands fa-discord',   name: 'Discord'   },
-            twitter:   { icon: 'fa-brands fa-twitter',   name: 'Twitter'   },
-            facebook:  { icon: 'fa-brands fa-facebook',  name: 'Facebook'  },
-            linkedin:  { icon: 'fa-brands fa-linkedin',  name: 'LinkedIn'  },
-            telegram:  { icon: 'fa-brands fa-telegram',  name: 'Telegram'  },
-            whatsapp:  { icon: 'fa-brands fa-whatsapp',  name: 'WhatsApp'  }
+            youtube:   { icon: 'fa-brands fa-youtube' },
+            instagram: { icon: 'fa-brands fa-instagram' },
+            tiktok:    { icon: 'fa-brands fa-tiktok' },
+            twitch:    { icon: 'fa-brands fa-twitch' },
+            discord:   { icon: 'fa-brands fa-discord' },
+            twitter:   { icon: 'fa-brands fa-twitter' },
+            facebook:  { icon: 'fa-brands fa-facebook' },
+            linkedin:  { icon: 'fa-brands fa-linkedin' },
+            telegram:  { icon: 'fa-brands fa-telegram' },
+            whatsapp:  { icon: 'fa-brands fa-whatsapp' }
         };
 
-        // ─── DETECTAR MODO: admin ou público ───────────────────────────────
-        // ?mode=public  → página pública (sem admin, sem login)
-        // sem parâmetro → modo admin (requer login)
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams    = new URLSearchParams(window.location.search);
         const isPublicMode = urlParams.get('mode') === 'public';
-        const isAdminMode  = !isPublicMode;
-
-        // ─── AUTENTICAÇÃO ───────────────────────────────────────────────────
-        let isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+        let isLoggedIn     = localStorage.getItem('adminLoggedIn') === 'true';
 
         function handleLogin() {
             const user = document.getElementById('loginUser').value;
             const pass = document.getElementById('loginPass').value;
-
             if (user === 'admin' && pass === 'admin123') {
                 isLoggedIn = true;
                 localStorage.setItem('adminLoggedIn', 'true');
                 showMainContent(true);
             } else {
                 document.getElementById('loginError').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('loginError').style.display = 'none';
-                }, 3000);
+                setTimeout(() => { document.getElementById('loginError').style.display = 'none'; }, 3000);
             }
         }
 
@@ -878,8 +827,6 @@
             document.getElementById('mainHeader').style.display = 'flex';
             document.getElementById('mainContent').style.display = 'block';
             document.getElementById('mainFooter').style.display = 'block';
-
-            // Monta botões do header conforme o modo
             const headerButtons = document.getElementById('headerButtons');
             if (withAdmin) {
                 headerButtons.innerHTML = `
@@ -891,42 +838,35 @@
                     </button>
                 `;
             } else {
-                headerButtons.innerHTML = ''; // usuário público não vê nada
+                headerButtons.innerHTML = '';
             }
-
             renderTasks();
             updateStats();
         }
 
-        // ─── DADOS ──────────────────────────────────────────────────────────
         let tasks = JSON.parse(localStorage.getItem('tasks')) || [
-            { id: 1, name: 'Inscreva-se no YouTube',  url: 'https://www.youtube.com/@NOXMODDER_EDITS', icon: 'fa-brands fa-youtube',    clicks: 0, completed: false },
-            { id: 2, name: 'Seguir no Instagram',     url: 'https://www.instagram.com/nxyss7/',         icon: 'fa-brands fa-instagram',  clicks: 0, completed: false },
-            { id: 3, name: 'Seguir no TikTok',        url: 'https://www.tiktok.com/@nxyss_7',           icon: 'fa-brands fa-tiktok',     clicks: 0, completed: false },
-            { id: 4, name: 'Seguir na Twitch',        url: 'https://www.twitch.tv/nxyss7',              icon: 'fa-brands fa-twitch',     clicks: 0, completed: false },
-            { id: 5, name: 'Entrar no Discord',       url: 'https://discord.com/invite/FzM9dknagA',     icon: 'fa-brands fa-discord',    clicks: 0, completed: false }
+            { id: 1, name: 'Inscreva-se no YouTube',  url: 'https://www.youtube.com/@NOXMODDER_EDITS', icon: 'fa-brands fa-youtube',   clicks: 0, completed: false },
+            { id: 2, name: 'Seguir no Instagram',     url: 'https://www.instagram.com/nxyss7/',         icon: 'fa-brands fa-instagram', clicks: 0, completed: false },
+            { id: 3, name: 'Seguir no TikTok',        url: 'https://www.tiktok.com/@nxyss_7',           icon: 'fa-brands fa-tiktok',    clicks: 0, completed: false },
+            { id: 4, name: 'Seguir na Twitch',        url: 'https://www.twitch.tv/nxyss7',              icon: 'fa-brands fa-twitch',    clicks: 0, completed: false },
+            { id: 5, name: 'Entrar no Discord',       url: 'https://discord.com/invite/FzM9dknagA',     icon: 'fa-brands fa-discord',   clicks: 0, completed: false }
         ];
 
-        let totalClicks  = JSON.parse(localStorage.getItem('totalClicks')) || 0;
-        let accessLink   = localStorage.getItem('accessLink') || '';
+        let totalClicks    = JSON.parse(localStorage.getItem('totalClicks')) || 0;
+        let accessLink     = localStorage.getItem('accessLink') || '';
         let generatedLinks = JSON.parse(localStorage.getItem('generatedLinks')) || [];
-
-        // Link gerado temporário (para exibir no resultado)
         let lastGeneratedUrl = '';
 
-        // ─── RESET DE TAREFAS AO CARREGAR ───────────────────────────────────
         function resetTasksCompletion() {
             tasks.forEach(t => { t.completed = false; });
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
 
-        // ─── SALVAR ──────────────────────────────────────────────────────────
         function saveData() {
             localStorage.setItem('tasks', JSON.stringify(tasks));
             localStorage.setItem('totalClicks', totalClicks);
         }
 
-        // ─── LINK DE ACESSO ──────────────────────────────────────────────────
         function saveAccessLink() {
             let link = document.getElementById('accessLink').value.trim();
             if (!link) { alert('Por favor, insira um link válido!'); return; }
@@ -951,50 +891,46 @@
             }
         }
 
-        // ─── GERAR LINK COMPARTILHÁVEL ───────────────────────────────────────
         function generateShareLink() {
             const name = document.getElementById('shareLinkName').value.trim();
             if (!name) { alert('Insira um nome para o link antes de gerar!'); return; }
 
-            // Gera URL com ?mode=public (mesma página, modo público)
+            // Salvar link de acesso automaticamente antes de gerar
+            let link = document.getElementById('accessLink').value.trim();
+            if (!link) { alert('⚠️ Configure o Link de Acesso antes de gerar o link compartilhável!'); return; }
+            if (!link.startsWith('http://') && !link.startsWith('https://')) link = 'https://' + link;
+            accessLink = link;
+            localStorage.setItem('accessLink', link);
+            const status = document.getElementById('accessLinkStatus');
+            status.textContent = '✅ Link de acesso salvo automaticamente!';
+            status.style.color = '#00ff9d';
+            setTimeout(() => { status.textContent = ''; }, 3000);
+
             const base = window.location.href.split('?')[0];
             const url  = base + '?mode=public';
-
-            const newLink = {
-                id:        Date.now(),
-                name:      name,
-                url:       url,
-                createdAt: new Date().toLocaleString('pt-BR')
-            };
-
+            const newLink = { id: Date.now(), name, url, createdAt: new Date().toLocaleString('pt-BR') };
             generatedLinks.push(newLink);
             localStorage.setItem('generatedLinks', JSON.stringify(generatedLinks));
-
             lastGeneratedUrl = url;
             document.getElementById('shareLinkUrl').textContent = url;
             document.getElementById('shareLinkResult').style.display = 'block';
             document.getElementById('shareLinkName').value = '';
-
             renderGeneratedLinks();
         }
 
         function copyGeneratedLink() {
             if (!lastGeneratedUrl) return;
-            navigator.clipboard.writeText(lastGeneratedUrl).then(() => {
-                alert('✅ Link copiado para a área de transferência!');
-            }).catch(() => {
-                prompt('Copie o link abaixo:', lastGeneratedUrl);
-            });
+            navigator.clipboard.writeText(lastGeneratedUrl)
+                .then(() => alert('✅ Link copiado para a área de transferência!'))
+                .catch(() => prompt('Copie o link abaixo:', lastGeneratedUrl));
         }
 
-        // ─── RENDERIZAR LINKS GERADOS ────────────────────────────────────────
         function renderGeneratedLinks() {
             const container = document.getElementById('generatedLinksList');
             if (generatedLinks.length === 0) {
                 container.innerHTML = '<p style="color: #664400; font-size: 13px; text-align: center;">Nenhum link gerado ainda.</p>';
                 return;
             }
-
             container.innerHTML = '';
             generatedLinks.forEach(link => {
                 const el = document.createElement('div');
@@ -1005,21 +941,13 @@
                     <div style="color:#886600; font-size:11px; margin-bottom:6px;">Criado em: ${link.createdAt}</div>
                     <div class="generated-link-url">${link.url}</div>
                     <div class="generated-link-actions">
-                        <button class="btn-copy" onclick="copyLink('${link.url}')">
-                            <i class="fa-solid fa-copy"></i> COPIAR
-                        </button>
-                        <button class="btn-edit-link" onclick="toggleEditForm(${link.id})">
-                            <i class="fa-solid fa-pen"></i> EDITAR NOME
-                        </button>
-                        <button class="btn-delete-link" onclick="deleteGeneratedLink(${link.id})">
-                            <i class="fa-solid fa-trash"></i> APAGAR
-                        </button>
+                        <button class="btn-copy" onclick="copyLink('${link.url}')"><i class="fa-solid fa-copy"></i> COPIAR</button>
+                        <button class="btn-edit-link" onclick="toggleEditForm(${link.id})"><i class="fa-solid fa-pen"></i> EDITAR NOME</button>
+                        <button class="btn-delete-link" onclick="deleteGeneratedLink(${link.id})"><i class="fa-solid fa-trash"></i> APAGAR</button>
                     </div>
                     <div class="edit-link-form" id="editform-${link.id}">
                         <input type="text" id="editname-${link.id}" value="${link.name}" placeholder="Novo nome do link">
-                        <button class="btn-add" onclick="saveEditedLinkName(${link.id})" style="margin:0;">
-                            <i class="fa-solid fa-save"></i> SALVAR NOME
-                        </button>
+                        <button class="btn-add" onclick="saveEditedLinkName(${link.id})" style="margin:0;"><i class="fa-solid fa-save"></i> SALVAR NOME</button>
                     </div>
                 `;
                 container.appendChild(el);
@@ -1027,16 +955,13 @@
         }
 
         function copyLink(url) {
-            navigator.clipboard.writeText(url).then(() => {
-                alert('✅ Link copiado!');
-            }).catch(() => {
-                prompt('Copie o link abaixo:', url);
-            });
+            navigator.clipboard.writeText(url)
+                .then(() => alert('✅ Link copiado!'))
+                .catch(() => prompt('Copie o link abaixo:', url));
         }
 
         function toggleEditForm(id) {
-            const form = document.getElementById('editform-' + id);
-            form.classList.toggle('show');
+            document.getElementById('editform-' + id).classList.toggle('show');
         }
 
         function saveEditedLinkName(id) {
@@ -1058,13 +983,11 @@
             }
         }
 
-        // ─── ÍCONE ───────────────────────────────────────────────────────────
         function updateIcon() {
             const selected = document.getElementById('socialMedia').value;
             document.getElementById('taskIcon').value = socialMediaConfig[selected]?.icon || '';
         }
 
-        // ─── RENDERIZAR TAREFAS ──────────────────────────────────────────────
         function renderTasks() {
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = '';
@@ -1091,7 +1014,6 @@
             updateStats();
         }
 
-        // ─── COMPLETAR TAREFA ────────────────────────────────────────────────
         function completeTask(taskId) {
             const task = tasks.find(t => t.id === taskId);
             if (!task || task.completed) return;
@@ -1104,19 +1026,16 @@
             updateStats();
         }
 
-        // ─── ATUALIZAR STATS ─────────────────────────────────────────────────
         function updateStats() {
             const completed  = tasks.filter(t => t.completed).length;
             const total      = tasks.length;
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-            document.getElementById('totalTasks').textContent     = total;
+            document.getElementById('totalTasks').textContent      = total;
             document.getElementById('completedTasks').textContent  = completed;
-            document.getElementById('totalClicks').textContent    = totalClicks;
+            document.getElementById('totalClicks').textContent     = totalClicks;
             document.getElementById('progressPercent').textContent = percentage + '%';
-            document.getElementById('progressText').textContent   = `${completed}/${total}`;
-            document.getElementById('progress').style.width       = percentage + '%';
-
+            document.getElementById('progressText').textContent    = `${completed}/${total}`;
+            document.getElementById('progress').style.width        = percentage + '%';
             const accessBtn = document.getElementById('accessBtn');
             if (percentage === 100) {
                 accessBtn.classList.add('unlocked');
@@ -1127,21 +1046,16 @@
             }
         }
 
-        // ─── BOTÃO DE ACESSO ─────────────────────────────────────────────────
         function handleAccessClick() {
             const completed  = tasks.filter(t => t.completed).length;
             const total      = tasks.length;
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
             if (percentage === 100) {
-                if (!accessLink) {
-                    alert('⚠️ Link de acesso não configurado! Peça ao administrador para configurar.');
-                    return;
-                }
+                if (!accessLink) { alert('⚠️ Link de acesso não configurado! Peça ao administrador para configurar.'); return; }
                 window.open(accessLink, '_blank');
             }
         }
 
-        // ─── ADMIN ───────────────────────────────────────────────────────────
         function openAdmin() {
             document.getElementById('adminModal').classList.add('show');
             document.getElementById('accessLink').value = accessLink;
@@ -1163,10 +1077,10 @@
             saveData();
             renderTasks();
             renderAdminTasks();
-            document.getElementById('taskName').value      = '';
-            document.getElementById('taskUrl').value       = '';
-            document.getElementById('socialMedia').value   = '';
-            document.getElementById('taskIcon').value      = '';
+            document.getElementById('taskName').value    = '';
+            document.getElementById('taskUrl').value     = '';
+            document.getElementById('socialMedia').value = '';
+            document.getElementById('taskIcon').value    = '';
         }
 
         function deleteTask(taskId) {
@@ -1210,13 +1124,12 @@
             }
         }
 
-        // ─── MATRIX BACKGROUND ───────────────────────────────────────────────
-        const canvas  = document.getElementById('matrix');
-        const ctx     = canvas.getContext('2d');
-        canvas.height = window.innerHeight;
-        canvas.width  = window.innerWidth;
-        const letters = '01アイウエオカキクケコサシスセソタチツテト';
-        const matrix  = letters.split('');
+        const canvas   = document.getElementById('matrix');
+        const ctx      = canvas.getContext('2d');
+        canvas.height  = window.innerHeight;
+        canvas.width   = window.innerWidth;
+        const letters  = '01アイウエオカキクケコサシスセソタチツテト';
+        const matrix   = letters.split('');
         const fontSize = 14;
         const columns  = canvas.width / fontSize;
         const drops    = [];
@@ -1241,14 +1154,11 @@
             canvas.width  = window.innerWidth;
         });
 
-        // ─── INICIALIZAR ─────────────────────────────────────────────────────
         resetTasksCompletion();
 
         if (isPublicMode) {
-            // Modo público: abre direto, sem login, sem botão admin
             showMainContent(false);
         } else {
-            // Modo admin: exige login
             if (isLoggedIn) {
                 showMainContent(true);
             } else {
@@ -1256,7 +1166,6 @@
             }
         }
 
-        // ENTER para login
         document.getElementById('loginPass').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') handleLogin();
         });
