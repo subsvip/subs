@@ -1,296 +1,1140 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nxyss7 | Acesso Bloqueado</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nxyss7 | Plataforma de Gamificação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        body {
+            background: #0a0e27;
+            color: #00ff9d;
+            overflow-x: hidden;
+        }
 
-<style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:monospace;
-}
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(10, 14, 39, 0.95);
+            border-bottom: 2px solid #00ff9d;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-body{
-background:#000;
-color:#00ff9d;
-display:flex;
-align-items:center;
-justify-content:center;
-height:100vh;
-overflow:hidden;
-}
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff9d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:-1;
-}
+        .admin-btn {
+            background: #001a0f;
+            border: 1px solid #00ff9d;
+            color: #00ff9d;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-family: 'Courier New', monospace;
+        }
 
-.container{
-width:90%;
-max-width:420px;
-background:rgba(0,0,0,0.85);
-border:1px solid #00ff9d;
-border-radius:10px;
-padding:30px;
-text-align:center;
-box-shadow:0 0 20px #00ff9d;
-}
+        .admin-btn:hover {
+            background: #00331f;
+            box-shadow: 0 0 15px #00ff9d;
+        }
 
-.logo{
-font-size:40px;
-margin-bottom:10px;
-color:#00ff9d;
-}
+        /* CONTAINER PRINCIPAL */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
 
-h1{
-margin-bottom:10px;
-}
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ff9d;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
 
-.desc{
-color:#0f0;
-font-size:14px;
-margin-bottom:20px;
-}
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.progress-bar{
-background:#111;
-height:10px;
-border-radius:10px;
-overflow:hidden;
-margin-bottom:25px;
-border:1px solid #00ff9d;
-}
+        .title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #00ff9d;
+            text-shadow: 0 0 10px #00ff9d;
+        }
 
-.progress{
-height:100%;
-width:0%;
-background:#00ff9d;
-transition:0.4s;
-}
+        .subtitle {
+            color: #0f0;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
 
-.btn{
-display:flex;
-align-items:center;
-justify-content:space-between;
-width:100%;
-padding:14px;
-margin:8px 0;
-border-radius:6px;
-text-decoration:none;
-font-weight:bold;
-color:#00ff9d;
-cursor:pointer;
-opacity:0.4;
-pointer-events:none;
-border:1px solid #00ff9d;
-background:#000;
-transition:0.2s;
-}
+        /* STATS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
 
-.btn span{
-display:flex;
-align-items:center;
-gap:10px;
-}
+        .stat-box {
+            background: rgba(0, 255, 157, 0.05);
+            border: 1px solid #00ff9d;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
 
-.btn i.check{
-opacity:0;
-}
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ff9d;
+        }
 
-.btn.active{
-opacity:1;
-pointer-events:auto;
-}
+        .stat-label {
+            font-size: 12px;
+            color: #0f0;
+            margin-top: 5px;
+        }
 
-.btn.done{
-background:#001a0f;
-}
+        /* PROGRESS BAR */
+        .progress-container {
+            margin-bottom: 30px;
+        }
 
-.btn.done i.check{
-opacity:1;
-color:#00ff9d;
-}
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
 
-.btn:hover{
-background:#002b18;
-transform:scale(1.03);
-}
+        .progress-bar {
+            background: #111;
+            height: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #00ff9d;
+            position: relative;
+        }
 
-.unlock{
-margin-top:15px;
-background:#001a0f;
-padding:15px;
-border-radius:6px;
-font-weight:bold;
-display:none;
-cursor:pointer;
-border:1px solid #00ff9d;
-}
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff9d, #00cc7f);
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 15px #00ff9d;
+            position: relative;
+        }
 
-.unlock:hover{
-background:#00331f;
-}
+        .progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
 
-.footer{
-margin-top:20px;
-font-size:12px;
-color:#0f0;
-}
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
-.creator{
-color:#00ff9d;
-font-weight:bold;
-}
+        /* TAREFAS */
+        .tasks {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
 
-</style>
+        .task {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ff9d;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .task.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .task.active:hover {
+            background: rgba(0, 255, 157, 0.1);
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+        }
+
+        .task.completed {
+            background: rgba(0, 26, 15, 0.8);
+            opacity: 0.7;
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .task-icon {
+            font-size: 24px;
+            color: #00ff9d;
+        }
+
+        .task-text {
+            text-align: left;
+        }
+
+        .task-name {
+            font-weight: bold;
+            color: #00ff9d;
+        }
+
+        .task-url {
+            font-size: 12px;
+            color: #0f0;
+            margin-top: 3px;
+        }
+
+        .task-action {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-clicks {
+            background: rgba(0, 255, 157, 0.1);
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #00ff9d;
+        }
+
+        .check-icon {
+            font-size: 20px;
+            color: #00ff9d;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .task.completed .check-icon {
+            opacity: 1;
+        }
+
+        /* ACCESS BUTTON */
+        .access-btn {
+            width: 100%;
+            padding: 20px;
+            background: #330000;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: not-allowed;
+            margin-top: 20px;
+            transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .access-btn.unlocked {
+            background: #001a0f;
+            border: 2px solid #00ff9d;
+            color: #00ff9d;
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+            animation: unlockPulse 0.6s ease-out;
+        }
+
+        .access-btn.unlocked:hover {
+            background: #00331f;
+            box-shadow: 0 0 25px #00ff9d;
+            transform: scale(1.02);
+        }
+
+        .access-btn i {
+            font-size: 24px;
+        }
+
+        @keyframes unlockPulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            50% {
+                box-shadow: 0 0 30px #00ff9d;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #0a0e27;
+            border: 2px solid #00ff9d;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 30px #00ff9d;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #00ff9d;
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #00ff9d;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #00ff9d;
+            font-size: 28px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #00ff9d;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #00ff9d;
+            color: #00ff9d;
+            border-radius: 5px;
+            font-family: monospace;
+            transition: 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff9d;
+        }
+
+        .form-select option {
+            background: #000;
+            color: #00ff9d;
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 12px;
+            background: #001a0f;
+            border: 1px solid #00ff9d;
+            color: #00ff9d;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn-add:hover {
+            background: #00331f;
+            box-shadow: 0 0 15px #00ff9d;
+        }
+
+        .task-list-admin {
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .task-item-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 255, 157, 0.05);
+            border: 1px solid #00ff9d;
+            border-radius: 5px;
+        }
+
+        .task-item-admin span {
+            color: #00ff9d;
+            font-size: 14px;
+        }
+
+        .btn-delete {
+            background: #330000;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn-delete:hover {
+            background: #660000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        /* LOGIN PAGE */
+        .login-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0e27;
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container.show {
+            display: flex;
+        }
+
+        .login-box {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff9d;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px #00ff9d;
+        }
+
+        .login-title {
+            font-size: 28px;
+            color: #00ff9d;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 0 0 10px #00ff9d;
+        }
+
+        .login-subtitle {
+            color: #0f0;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #00ff9d;
+            color: #00ff9d;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .login-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff9d;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #001a0f;
+            border: 1px solid #00ff9d;
+            color: #00ff9d;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+        }
+
+        .login-btn:hover {
+            background: #00331f;
+            box-shadow: 0 0 15px #00ff9d;
+        }
+
+        .login-error {
+            color: #ff0000;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .logout-btn {
+            background: #330000;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .logout-btn:hover {
+            background: #660000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #0f0;
+            font-size: 12px;
+            border-top: 1px solid #00ff9d;
+            margin-top: 50px;
+        }
+
+        .creator {
+            color: #00ff9d;
+            font-weight: bold;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .title {
+                font-size: 22px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-content, .login-box {
+                padding: 20px;
+            }
+
+            .access-btn {
+                font-size: 16px;
+                padding: 16px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <canvas id="matrix"></canvas>
 
-<canvas id="matrix"></canvas>
+    <!-- LOGIN PAGE -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <div class="login-title">
+                <i class="fa-solid fa-lock"></i> ADMIN LOGIN
+            </div>
+            <div class="login-subtitle">Acesso restrito ao painel administrativo</div>
+            
+            <input type="text" class="login-input" id="loginUser" placeholder="Usuário" autocomplete="off">
+            <input type="password" class="login-input" id="loginPass" placeholder="Senha" autocomplete="off">
+            
+            <button class="login-btn" onclick="handleLogin()">ENTRAR</button>
+            
+            <div class="login-error" id="loginError">Usuário ou senha incorretos!</div>
+        </div>
+    </div>
 
-<div class="container">
+    <!-- HEADER -->
+    <div class="header" id="mainHeader" style="display: none;">
+        <div class="logo">
+            <i class="fa-solid fa-user-secret"></i>
+            NXYSS7 GAMIFICATION
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <button class="admin-btn" onclick="openAdmin()">
+                <i class="fa-solid fa-sliders"></i> PAINEL ADMIN
+            </button>
+            <button class="logout-btn" onclick="handleLogout()">
+                <i class="fa-solid fa-sign-out-alt"></i> LOGOUT
+            </button>
+        </div>
+    </div>
 
-<div class="logo">
-<i class="fa-solid fa-user-secret"></i>
-</div>
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="card">
+            <div class="title">
+                <i class="fa-solid fa-lock"></i> ACESSO BLOQUEADO
+            </div>
+            <div class="subtitle">
+                Complete as tarefas abaixo para liberar o conteúdo exclusivo
+            </div>
 
-<h1>ACESSO BLOQUEADO</h1>
+            <!-- STATS -->
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div class="stat-label">TAREFAS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">CONCLUÍDAS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalClicks">0</div>
+                    <div class="stat-label">CLIQUES</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="progressPercent">0%</div>
+                    <div class="stat-label">PROGRESSO</div>
+                </div>
+            </div>
 
-<div class="desc">
-Complete as tarefas abaixo para liberar o conteúdo
-</div>
+            <!-- PROGRESS BAR -->
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>PROGRESSO GERAL</span>
+                    <span id="progressText">0/0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
 
-<div class="progress-bar">
-<div class="progress" id="progress"></div>
-</div>
+            <!-- TAREFAS -->
+            <div class="tasks" id="tasksList"></div>
 
-<div id="btn1" class="btn active" onclick="task(1,'https://www.youtube.com/@NOXMODDER_EDITS')">
-<span><i class="fa-brands fa-youtube"></i> Inscreva-se no YouTube</span>
-<i class="fa-solid fa-check check"></i>
-</div>
+            <!-- ACCESS BUTTON -->
+            <button class="access-btn" id="accessBtn" onclick="handleAccessClick()">
+                <i class="fa-solid fa-lock"></i>
+                <span id="accessBtnText">ACESSO BLOQUEADO</span>
+            </button>
+        </div>
+    </div>
 
-<div id="btn2" class="btn" onclick="task(2,'https://www.instagram.com/nxyss7/')">
-<span><i class="fa-brands fa-instagram"></i> Seguir no Instagram</span>
-<i class="fa-solid fa-check check"></i>
-</div>
+    <!-- FOOTER -->
+    <div class="footer" id="mainFooter" style="display: none;">
+        Criado por <span class="creator">NOX MODDER</span> | Plataforma de Gamificação Profissional
+    </div>
 
-<div id="btn3" class="btn" onclick="task(3,'https://www.tiktok.com/@nxyss_7')">
-<span><i class="fa-brands fa-tiktok"></i> Seguir no TikTok</span>
-<i class="fa-solid fa-check check"></i>
-</div>
+    <!-- MODAL ADMIN -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fa-solid fa-sliders"></i> PAINEL ADMIN
+                </div>
+                <button class="close-btn" onclick="closeAdmin()">×</button>
+            </div>
 
-<div id="btn4" class="btn" onclick="task(4,'https://www.twitch.tv/nxyss7')">
-<span><i class="fa-brands fa-twitch"></i> Seguir na Twitch</span>
-<i class="fa-solid fa-check check"></i>
-</div>
+            <!-- CONFIGURAÇÃO DE LINK DE ACESSO -->
+            <div class="form-group" style="background: rgba(0, 255, 157, 0.05); padding: 15px; border-radius: 8px; border: 1px solid #00ff9d; margin-bottom: 25px;">
+                <div class="form-label">⚙️ CONFIGURAR LINK DE ACESSO</div>
+                <input type="text" class="form-input" id="accessLink" placeholder="Cole o link de destino (ex: https://seu-site.com/conteudo)">
+                <button class="btn-add" onclick="saveAccessLink()">
+                    <i class="fa-solid fa-save"></i> SALVAR LINK
+                </button>
+                <button class="btn-add" style="background: #330000; border-color: #ff0000; margin-top: 5px;" onclick="clearAccessLink()">
+                    <i class="fa-solid fa-trash"></i> LIMPAR LINK
+                </button>
+                <div id="accessLinkStatus" style="color: #0f0; font-size: 12px; margin-top: 10px;"></div>
+            </div>
 
-<div id="btn5" class="btn" onclick="task(5,'https://discord.com/invite/FzM9dknagA')">
-<span><i class="fa-brands fa-discord"></i> Entrar no Discord</span>
-<i class="fa-solid fa-check check"></i>
-</div>
+            <!-- ADICIONAR TAREFA -->
+            <div class="form-group">
+                <div class="form-label">ADICIONAR NOVA TAREFA</div>
+                <input type="text" class="form-input" id="taskName" placeholder="Nome da tarefa (ex: Seguir no Instagram)">
+                
+                <div class="form-label">SELECIONE A REDE SOCIAL</div>
+                <select class="form-select" id="socialMedia" onchange="updateIcon()">
+                    <option value="">-- Selecione uma rede social --</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="twitch">Twitch</option>
+                    <option value="discord">Discord</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="telegram">Telegram</option>
+                    <option value="whatsapp">WhatsApp</option>
+                </select>
 
-<div class="unlock" id="unlockBtn" onclick="unlock()">
-LIBERAR CONTEÚDO
-</div>
+                <input type="text" class="form-input" id="taskUrl" placeholder="Link da rede social (ex: https://instagram.com/seu_perfil)">
+                <input type="hidden" id="taskIcon">
+                
+                <button class="btn-add" onclick="addTask()">
+                    <i class="fa-solid fa-plus"></i> ADICIONAR TAREFA
+                </button>
+            </div>
 
-<div class="footer">
-Criado por <span class="creator">NOX MODDER</span>
-</div>
+            <!-- LISTA DE TAREFAS -->
+            <div class="form-label">TAREFAS CADASTRADAS</div>
+            <div class="task-list-admin" id="adminTaskList"></div>
 
-</div>
+            <!-- CONFIGURAÇÕES -->
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #00ff9d;">
+                <div class="form-label">CONFIGURAÇÕES</div>
+                <button class="btn-add" style="background: #330000; border-color: #ff0000;" onclick="resetData()">
+                    <i class="fa-solid fa-trash"></i> LIMPAR TODOS OS DADOS
+                </button>
+            </div>
+        </div>
+    </div>
 
-<script>
+    <script>
+        // CONFIGURAÇÃO DE REDES SOCIAIS
+        const socialMediaConfig = {
+            youtube: { icon: 'fa-brands fa-youtube', name: 'YouTube' },
+            instagram: { icon: 'fa-brands fa-instagram', name: 'Instagram' },
+            tiktok: { icon: 'fa-brands fa-tiktok', name: 'TikTok' },
+            twitch: { icon: 'fa-brands fa-twitch', name: 'Twitch' },
+            discord: { icon: 'fa-brands fa-discord', name: 'Discord' },
+            twitter: { icon: 'fa-brands fa-twitter', name: 'Twitter' },
+            facebook: { icon: 'fa-brands fa-facebook', name: 'Facebook' },
+            linkedin: { icon: 'fa-brands fa-linkedin', name: 'LinkedIn' },
+            telegram: { icon: 'fa-brands fa-telegram', name: 'Telegram' },
+            whatsapp: { icon: 'fa-brands fa-whatsapp', name: 'WhatsApp' }
+        };
 
-let total = 5
-let progress = 0
-let completed = [false,false,false,false,false]
+        // AUTENTICAÇÃO
+        let isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
 
-function task(step,link){
+        function handleLogin() {
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
 
-if(completed[step-1]) return
+            if (user === 'admin' && pass === 'admin123') {
+                isLoggedIn = true;
+                localStorage.setItem('adminLoggedIn', 'true');
+                document.getElementById('loginContainer').classList.remove('show');
+                document.getElementById('mainHeader').style.display = 'flex';
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('mainFooter').style.display = 'block';
+                renderTasks();
+                updateStats();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('loginError').style.display = 'none';
+                }, 3000);
+            }
+        }
 
-window.open(link,"_blank")
+        function handleLogout() {
+            if (confirm('Tem certeza que deseja fazer logout?')) {
+                isLoggedIn = false;
+                localStorage.setItem('adminLoggedIn', 'false');
+                document.getElementById('loginContainer').classList.add('show');
+                document.getElementById('mainHeader').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('mainFooter').style.display = 'none';
+                document.getElementById('loginUser').value = '';
+                document.getElementById('loginPass').value = '';
+                closeAdmin();
+            }
+        }
 
-completed[step-1] = true
+        // DADOS
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [
+            { id: 1, name: 'Inscreva-se no YouTube', url: 'https://www.youtube.com/@NOXMODDER_EDITS', icon: 'fa-brands fa-youtube', clicks: 0, completed: false },
+            { id: 2, name: 'Seguir no Instagram', url: 'https://www.instagram.com/nxyss7/', icon: 'fa-brands fa-instagram', clicks: 0, completed: false },
+            { id: 3, name: 'Seguir no TikTok', url: 'https://www.tiktok.com/@nxyss_7', icon: 'fa-brands fa-tiktok', clicks: 0, completed: false },
+            { id: 4, name: 'Seguir na Twitch', url: 'https://www.twitch.tv/nxyss7', icon: 'fa-brands fa-twitch', clicks: 0, completed: false },
+            { id: 5, name: 'Entrar no Discord', url: 'https://discord.com/invite/FzM9dknagA', icon: 'fa-brands fa-discord', clicks: 0, completed: false }
+        ];
 
-progress += 100/total
+        let totalClicks = JSON.parse(localStorage.getItem('totalClicks')) || 0;
+        let accessLink = localStorage.getItem('accessLink') || '';
 
-document.getElementById("progress").style.width = progress + "%"
+        // RESETAR TAREFAS AO CARREGAR A PÁGINA
+        function resetTasksCompletion() {
+            tasks.forEach(task => {
+                task.completed = false;
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
 
-let currentBtn = document.getElementById("btn"+step)
-currentBtn.classList.remove("active")
-currentBtn.classList.add("done")
+        // SALVAR DADOS
+        function saveData() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            localStorage.setItem('totalClicks', totalClicks);
+        }
 
-let next = step + 1
+        // SALVAR LINK DE ACESSO
+        function saveAccessLink() {
+            let link = document.getElementById('accessLink').value.trim();
+            
+            if (!link) {
+                alert('Por favor, insira um link válido!');
+                return;
+            }
 
-if(document.getElementById("btn"+next)){
-document.getElementById("btn"+next).classList.add("active")
-}
+            // Adicionar https:// se não tiver protocolo
+            if (!link.startsWith('http://') && !link.startsWith('https://')) {
+                link = 'https://' + link;
+            }
 
-if(progress >= 100){
-document.getElementById("unlockBtn").style.display="block"
-}
+            accessLink = link;
+            localStorage.setItem('accessLink', link);
+            
+            const status = document.getElementById('accessLinkStatus');
+            status.textContent = '✅ Link salvo com sucesso!';
+            status.style.color = '#00ff9d';
+            
+            setTimeout(() => {
+                status.textContent = '';
+            }, 3000);
+        }
 
-}
+        // LIMPAR LINK DE ACESSO
+        function clearAccessLink() {
+            if (confirm('Tem certeza que deseja limpar o link de acesso?')) {
+                accessLink = '';
+                localStorage.removeItem('accessLink');
+                document.getElementById('accessLink').value = '';
+                
+                const status = document.getElementById('accessLinkStatus');
+                status.textContent = '🗑️ Link removido!';
+                status.style.color = '#ff0000';
+                
+                setTimeout(() => {
+                    status.textContent = '';
+                }, 3000);
+            }
+        }
 
-function unlock(){
-window.location.href="https://www.youtube.com/@NOXMODDER_EDITS"
-}
+        // ATUALIZAR ÍCONE
+        function updateIcon() {
+            const selected = document.getElementById('socialMedia').value;
+            const icon = socialMediaConfig[selected]?.icon || '';
+            document.getElementById('taskIcon').value = icon;
+        }
 
-/* MATRIX FUNDO */
+        // RENDERIZAR TAREFAS
+        function renderTasks() {
+            const tasksList = document.getElementById('tasksList');
+            tasksList.innerHTML = '';
 
-const canvas = document.getElementById("matrix")
-const ctx = canvas.getContext("2d")
+            tasks.forEach((task, index) => {
+                const isActive = index === 0 || tasks.slice(0, index).every(t => t.completed);
+                const taskEl = document.createElement('div');
+                taskEl.className = `task ${isActive ? 'active' : ''} ${task.completed ? 'completed' : ''}`;
+                taskEl.innerHTML = `
+                    <div class="task-info">
+                        <div class="task-icon"><i class="${task.icon}"></i></div>
+                        <div class="task-text">
+                            <div class="task-name">${task.name}</div>
+                            <div class="task-url">${task.url}</div>
+                        </div>
+                    </div>
+                    <div class="task-action">
+                        <div class="task-clicks">${task.clicks} cliques</div>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                `;
+                taskEl.onclick = () => completeTask(task.id);
+                tasksList.appendChild(taskEl);
+            });
 
-canvas.height = window.innerHeight
-canvas.width = window.innerWidth
+            updateStats();
+        }
 
-const letters = "01"
-const matrix = letters.split("")
+        // COMPLETAR TAREFA
+        function completeTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task || task.completed) return;
 
-const fontSize = 14
-const columns = canvas.width / fontSize
+            window.open(task.url, '_blank');
+            task.clicks++;
+            totalClicks++;
+            task.completed = true;
 
-const drops = []
+            saveData();
+            renderTasks();
+            updateStats();
+        }
 
-for(let x = 0; x < columns; x++)
-drops[x] = 1
+        // ATUALIZAR STATS E BOTÃO DE ACESSO
+        function updateStats() {
+            const completed = tasks.filter(t => t.completed).length;
+            const total = tasks.length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-function draw(){
+            document.getElementById('totalTasks').textContent = total;
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('totalClicks').textContent = totalClicks;
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressText').textContent = `${completed}/${total}`;
+            document.getElementById('progress').style.width = percentage + '%';
 
-ctx.fillStyle = "rgba(0,0,0,0.05)"
-ctx.fillRect(0,0,canvas.width,canvas.height)
+            // ATUALIZAR BOTÃO DE ACESSO
+            const accessBtn = document.getElementById('accessBtn');
 
-ctx.fillStyle = "#00ff9d"
-ctx.font = fontSize + "px monospace"
+            if (percentage === 100) {
+                accessBtn.classList.add('unlocked');
+                accessBtn.innerHTML = '<i class="fa-solid fa-lock-open"></i><span>ACESSO LIBERADO</span>';
+            } else {
+                accessBtn.classList.remove('unlocked');
+                accessBtn.innerHTML = '<i class="fa-solid fa-lock"></i><span>ACESSO BLOQUEADO</span>';
+            }
+        }
 
-for(let i = 0; i < drops.length; i++){
+        // CLIQUE NO BOTÃO DE ACESSO
+        function handleAccessClick() {
+            const completed = tasks.filter(t => t.completed).length;
+            const total = tasks.length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-const text = matrix[Math.floor(Math.random()*matrix.length)]
+            if (percentage === 100) {
+                if (!accessLink) {
+                    alert('⚠️ Link de acesso não configurado! Peça ao administrador para configurar.');
+                    return;
+                }
+                // Abrir link em nova aba
+                window.open(accessLink, '_blank');
+            }
+        }
 
-ctx.fillText(text, i*fontSize, drops[i]*fontSize)
+        // ADMIN
+        function openAdmin() {
+            document.getElementById('adminModal').classList.add('show');
+            document.getElementById('accessLink').value = accessLink;
+            renderAdminTasks();
+        }
 
-if(drops[i]*fontSize > canvas.height && Math.random() > 0.975)
-drops[i] = 0
+        function closeAdmin() {
+            document.getElementById('adminModal').classList.remove('show');
+        }
 
-drops[i]++
+        function addTask() {
+            const name = document.getElementById('taskName').value.trim();
+            const url = document.getElementById('taskUrl').value.trim();
+            const icon = document.getElementById('taskIcon').value.trim();
+            const social = document.getElementById('socialMedia').value;
 
-}
+            if (!name || !url || !social) {
+                alert('Preencha todos os campos!');
+                return;
+            }
 
-}
+            const newTask = {
+                id: Math.max(...tasks.map(t => t.id), 0) + 1,
+                name,
+                url,
+                icon,
+                clicks: 0,
+                completed: false
+            };
 
-setInterval(draw,33)
+            tasks.push(newTask);
+            saveData();
+            renderTasks();
+            renderAdminTasks();
 
-</script>
+            document.getElementById('taskName').value = '';
+            document.getElementById('taskUrl').value = '';
+            document.getElementById('socialMedia').value = '';
+            document.getElementById('taskIcon').value = '';
+        }
 
+        function deleteTask(taskId) {
+            if (confirm('Tem certeza que deseja deletar esta tarefa?')) {
+                tasks = tasks.filter(t => t.id !== taskId);
+                saveData();
+                renderTasks();
+                renderAdminTasks();
+            }
+        }
+
+        function renderAdminTasks() {
+            const adminList = document.getElementById('adminTaskList');
+            adminList.innerHTML = '';
+
+            if (tasks.length === 0) {
+                adminList.innerHTML = '<p style="color: #0f0; text-align: center;">Nenhuma tarefa cadastrada</p>';
+                return;
+            }
+
+            tasks.forEach(task => {
+                const taskEl = document.createElement('div');
+                taskEl.className = 'task-item-admin';
+                taskEl.innerHTML = `
+                    <span><i class="${task.icon}"></i> ${task.name}</span>
+                    <button class="btn-delete" onclick="deleteTask(${task.id})">
+                        <i class="fa-solid fa-trash"></i> DELETAR
+                    </button>
+                `;
+                adminList.appendChild(taskEl);
+            });
+        }
+
+        function resetData() {
+            if (confirm('⚠️ ATENÇÃO: Isso vai limpar TODOS os dados! Tem certeza?')) {
+                tasks = [];
+                totalClicks = 0;
+                localStorage.removeItem('tasks');
+                localStorage.removeItem('totalClicks');
+                renderTasks();
+                renderAdminTasks();
+                updateStats();
+            }
+        }
+
+        // MATRIX BACKGROUND
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+
+        const letters = '01アイウエオカキクケコサシスセソタチツテト';
+        const matrix = letters.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) drops[x] = 1;
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff9d';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrix[Math.floor(Math.random() * matrix.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
+        });
+
+        // INICIALIZAR
+        resetTasksCompletion(); // Resetar tarefas ao carregar a página
+
+        if (isLoggedIn) {
+            document.getElementById('loginContainer').classList.remove('show');
+            document.getElementById('mainHeader').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('mainFooter').style.display = 'block';
+        } else {
+            document.getElementById('loginContainer').classList.add('show');
+        }
+
+        renderTasks();
+        updateStats();
+
+        // ENTER PARA LOGIN
+        document.getElementById('loginPass').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+    </script>
 </body>
 </html>
