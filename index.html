@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nxyss7 | Acesso Bloqueado</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:monospace;
+}
+
+body{
+background:#000;
+color:#00ff9d;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+overflow:hidden;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+.container{
+width:90%;
+max-width:420px;
+background:rgba(0,0,0,0.85);
+border:1px solid #00ff9d;
+border-radius:10px;
+padding:30px;
+text-align:center;
+box-shadow:0 0 20px #00ff9d;
+}
+
+.logo{
+font-size:40px;
+margin-bottom:10px;
+color:#00ff9d;
+}
+
+h1{
+margin-bottom:10px;
+}
+
+.desc{
+color:#0f0;
+font-size:14px;
+margin-bottom:20px;
+}
+
+.progress-bar{
+background:#111;
+height:10px;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:25px;
+border:1px solid #00ff9d;
+}
+
+.progress{
+height:100%;
+width:0%;
+background:#00ff9d;
+transition:0.4s;
+}
+
+.btn{
+display:flex;
+align-items:center;
+justify-content:space-between;
+width:100%;
+padding:14px;
+margin:8px 0;
+border-radius:6px;
+text-decoration:none;
+font-weight:bold;
+color:#00ff9d;
+cursor:pointer;
+opacity:0.4;
+pointer-events:none;
+border:1px solid #00ff9d;
+background:#000;
+transition:0.2s;
+}
+
+.btn span{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.btn i.check{
+opacity:0;
+}
+
+.btn.active{
+opacity:1;
+pointer-events:auto;
+}
+
+.btn.done{
+background:#001a0f;
+}
+
+.btn.done i.check{
+opacity:1;
+color:#00ff9d;
+}
+
+.btn:hover{
+background:#002b18;
+transform:scale(1.03);
+}
+
+.unlock{
+margin-top:15px;
+background:#001a0f;
+padding:15px;
+border-radius:6px;
+font-weight:bold;
+display:none;
+cursor:pointer;
+border:1px solid #00ff9d;
+}
+
+.unlock:hover{
+background:#00331f;
+}
+
+.footer{
+margin-top:20px;
+font-size:12px;
+color:#0f0;
+}
+
+.creator{
+color:#00ff9d;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container">
+
+<div class="logo">
+<i class="fa-solid fa-user-secret"></i>
+</div>
+
+<h1>ACESSO BLOQUEADO</h1>
+
+<div class="desc">
+Complete as tarefas abaixo para liberar o conteúdo
+</div>
+
+<div class="progress-bar">
+<div class="progress" id="progress"></div>
+</div>
+
+<div id="btn1" class="btn active" onclick="task(1,'https://www.youtube.com/@NOXMODDER_EDITS')">
+<span><i class="fa-brands fa-youtube"></i> Inscreva-se no YouTube</span>
+<i class="fa-solid fa-check check"></i>
+</div>
+
+<div id="btn2" class="btn" onclick="task(2,'https://www.instagram.com/nxyss7/')">
+<span><i class="fa-brands fa-instagram"></i> Seguir no Instagram</span>
+<i class="fa-solid fa-check check"></i>
+</div>
+
+<div id="btn3" class="btn" onclick="task(3,'https://www.tiktok.com/@nxyss_7')">
+<span><i class="fa-brands fa-tiktok"></i> Seguir no TikTok</span>
+<i class="fa-solid fa-check check"></i>
+</div>
+
+<div id="btn4" class="btn" onclick="task(4,'https://www.twitch.tv/nxyss7')">
+<span><i class="fa-brands fa-twitch"></i> Seguir na Twitch</span>
+<i class="fa-solid fa-check check"></i>
+</div>
+
+<div id="btn5" class="btn" onclick="task(5,'https://discord.com/invite/FzM9dknagA')">
+<span><i class="fa-brands fa-discord"></i> Entrar no Discord</span>
+<i class="fa-solid fa-check check"></i>
+</div>
+
+<div class="unlock" id="unlockBtn" onclick="unlock()">
+LIBERAR CONTEÚDO
+</div>
+
+<div class="footer">
+Criado por <span class="creator">NOX MODDER</span>
+</div>
+
+</div>
+
+<script>
+
+let total = 5
+let progress = 0
+let completed = [false,false,false,false,false]
+
+function task(step,link){
+
+if(completed[step-1]) return
+
+window.open(link,"_blank")
+
+completed[step-1] = true
+
+progress += 100/total
+
+document.getElementById("progress").style.width = progress + "%"
+
+let currentBtn = document.getElementById("btn"+step)
+currentBtn.classList.remove("active")
+currentBtn.classList.add("done")
+
+let next = step + 1
+
+if(document.getElementById("btn"+next)){
+document.getElementById("btn"+next).classList.add("active")
+}
+
+if(progress >= 100){
+document.getElementById("unlockBtn").style.display="block"
+}
+
+}
+
+function unlock(){
+window.location.href="https://www.youtube.com/@NOXMODDER_EDITS"
+}
+
+/* MATRIX FUNDO */
+
+const canvas = document.getElementById("matrix")
+const ctx = canvas.getContext("2d")
+
+canvas.height = window.innerHeight
+canvas.width = window.innerWidth
+
+const letters = "01"
+const matrix = letters.split("")
+
+const fontSize = 14
+const columns = canvas.width / fontSize
+
+const drops = []
+
+for(let x = 0; x < columns; x++)
+drops[x] = 1
+
+function draw(){
+
+ctx.fillStyle = "rgba(0,0,0,0.05)"
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle = "#00ff9d"
+ctx.font = fontSize + "px monospace"
+
+for(let i = 0; i < drops.length; i++){
+
+const text = matrix[Math.floor(Math.random()*matrix.length)]
+
+ctx.fillText(text, i*fontSize, drops[i]*fontSize)
+
+if(drops[i]*fontSize > canvas.height && Math.random() > 0.975)
+drops[i] = 0
+
+drops[i]++
+
+}
+
+}
+
+setInterval(draw,33)
+
+</script>
+
+</body>
+</html>
